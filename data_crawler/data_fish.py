@@ -1,8 +1,4 @@
-{
-    "save_dir": "./downloads/",
-    "num_downloads_for_each_class": 500,
-    "search_file_type": "jpg",
-    "search_keywords_dict": {
+fishName = {
         "Eptatretus burgeri": [
             "먹장어",
             "Eptatretus burgeri"
@@ -227,8 +223,4 @@
             "달고기",
             "eus faber"
         ]
-    },
-    "search_cdr_days": 3000,
-    "output_prefix": "download_urls",
-    "output_suffix": "google"
-}
+    }
