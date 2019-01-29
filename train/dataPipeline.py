@@ -71,12 +71,24 @@ def img_decode(path,label):
         img = cv2.imread(path.decode())
         return img
     return tf.py_func(getImage, [path], [tf.uint8]),label
+
+def img_decode_tf(path, label):
+    reshaped_image = tf.image.decode_image(tf.read_file(path), channels=3)
+    distorted_image = tf.random_crop(reshaped_image, [32, 32, 3])
+    distorted_image = tf.image.random_flip_left_right(distorted_image)
+    distorted_image = tf.image.random_brightness(distorted_image,max_delta=63)
+    distorted_image = tf.image.random_contrast(distorted_image,lower=0.2, upper=1.8)
+    float_image = tf.image.per_image_standardization(distorted_image)
+
+    return float_image, label
 #
 #
 dataset = tf.data.Dataset.from_tensor_slices((files,labels))
 # dataset = dataset.shuffle(10000)
 # dataset = dataset.repeat()
-dataset = dataset.map(img_decode, num_parallel_calls=3)
+# dataset = dataset.map(img_decode, num_parallel_calls=3)
+dataset = dataset.map(img_decode_tf, num_parallel_calls=3)
+
 # dataset = dataset.batch(5)
 imgs = dataset.make_one_shot_iterator().get_next()
 
